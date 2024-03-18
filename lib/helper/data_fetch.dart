@@ -1,27 +1,20 @@
-// import 'dart:convert';
-// import 'package:http/http.dart' as http;
-// import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
-// class DataFetcher {
-//   Future<Map<String, dynamic>> fetchUserData(String username) async {
-//     String url = 'https://leetcode-stats-api.herokuapp.com/$username';
-//     http.Response response = await http.get(Uri.parse(url));
+import 'package:http/http.dart' as http;
 
-//     if (response.statusCode == 200) {
-//       Map<String, dynamic> userData = json.decode(response.body);
-//       return userData;
-//     } else {
-//       throw Exception('Failed to load user data');
-//     }
-//   }
+class FetchUser {
+  Future<Map<String, dynamic>> fetchUserData(String user) async {
+    String url = 'https://leetcode-stats-api.herokuapp.com/$user';
+    http.Response response = await http.get(Uri.parse(url));
 
-//   Future<String> loadUsername() async {
-//     SharedPreferences prefs = await SharedPreferences.getInstance();
-//     return prefs.getString('username') ?? '';
-//   }
-
-//   Future<void> saveUsername(String username) async {
-//     SharedPreferences prefs = await SharedPreferences.getInstance();
-//     prefs.setString('username', username);
-//   }
-// }
+    if (response.statusCode == 200) {
+      return json.decode(
+        response.body,
+      );
+    } else {
+      throw Exception(
+        'Failed to load user data',
+      );
+    }
+  }
+}
