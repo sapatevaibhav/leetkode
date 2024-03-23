@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:leetkode/helper/username_prompt.dart';
+import 'package:leetkode/pages/view_profile.dart';
+
 class AppDrawer extends StatelessWidget {
   final String username;
   final Function(String) onUpdateUsername;
@@ -38,6 +40,17 @@ class AppDrawer extends StatelessWidget {
                 onUpdateUsername(newUsername);
                 saveUsername(newUsername);
               }
+            },
+          ),
+          ListTile(
+            title: const Text(
+              'View Profile',
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfilePage()),
+              );
             },
           ),
         ],
