@@ -40,20 +40,12 @@ class UserAccuracy extends StatelessWidget {
             children: [
               Text(
                 '${userData!['acceptanceRate'].toInt()}%',
-                style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 60),
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 60),
               ),
               const Text(
                 'Accuracy',
                 style: TextStyle(
-                  color: Color.fromARGB(
-                    255,
-                    37,
-                    37,
-                    37,
-                  ),
                   fontWeight: FontWeight.w400,
                   fontSize: 16,
                 ),
