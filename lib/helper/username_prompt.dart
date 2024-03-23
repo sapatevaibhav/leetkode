@@ -23,6 +23,7 @@ Future<String?> promptUsername(BuildContext context) async {
           ElevatedButton(
             onPressed: () {
               String enteredUsername = usernameController.text;
+              
               if (enteredUsername.isNotEmpty) {
                 Navigator.of(context).pop(
                   enteredUsername,

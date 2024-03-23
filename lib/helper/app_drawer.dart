@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-
+import 'package:leetkode/helper/username_prompt.dart';
 class AppDrawer extends StatelessWidget {
   final String username;
+  final Function(String) onUpdateUsername;
 
-  const AppDrawer({Key? key, required this.username})
-      : super(
-          key: key,
-        );
+  const AppDrawer({
+    Key? key,
+    required this.username,
+    required this.onUpdateUsername,
+  }) : super(key: key);
 
   @override
-  Widget build(
-    BuildContext context,
-  ) {
+  Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -30,12 +30,14 @@ class AppDrawer extends StatelessWidget {
           ),
           ListTile(
             title: const Text(
-              'Settings',
+              'Change username',
             ),
-            onTap: () {
-              Navigator.pop(
-                context,
-              );
+            onTap: () async {
+              String? newUsername = await promptUsername(context);
+              if (newUsername != null && newUsername.isNotEmpty) {
+                onUpdateUsername(newUsername);
+                saveUsername(newUsername);
+              }
             },
           ),
         ],
