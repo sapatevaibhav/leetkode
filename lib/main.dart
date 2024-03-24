@@ -11,7 +11,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +106,12 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('LeetCode Stats'),
+        title: const Text(
+          'LeetCode Stats',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         actions: [
           IconButton(
             icon: Icon(
@@ -130,16 +135,30 @@ class HomePageState extends State<HomePage> {
           children: <Widget>[
             const SizedBox(height: 20),
             if (_userData != null)
+              // Expanded(
+              //   child:
               Column(
                 children: [
                   Text(
                     'Name: $_username',
+                    style: const TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Text(
                     'Total Solved: ${_userData!['totalSolved']}',
+                    style: const TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.normal,
+                    ),
                   ),
                   Text(
                     'Rank: ${_userData!['ranking']}',
+                    style: const TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 25),
                   ThreeLevels(userData: _userData),
@@ -147,6 +166,7 @@ class HomePageState extends State<HomePage> {
                   UserAccuracy(userData: _userData),
                 ],
               ),
+            // ),
           ],
         ),
       ),
