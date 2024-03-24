@@ -22,7 +22,7 @@ class SubmissionTile extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: isFlipped ? Colors.green : _getColorForDate(submissionCount),
+          color: isFlipped ? const Color.fromARGB(55, 0, 179, 255) : _getColorForDate(submissionCount),
           shape: BoxShape.circle,
         ),
         child: AnimatedContainer(
@@ -65,8 +65,8 @@ class SubmissionTile extends StatelessWidget {
 
   Color _getColorForDate(int submissionCount) {
     final colorValue = submissionCount / 30;
-    return Color.lerp(const Color.fromARGB(255, 157, 203, 240),
-        const Color.fromARGB(255, 0, 140, 255), colorValue)!;
+    return Color.lerp(const Color.fromARGB(255, 19, 75, 40),
+        const Color.fromARGB(255, 128, 236, 166), colorValue)!;
   }
 
   Color _getTextColorForDate(int submissionCount) {

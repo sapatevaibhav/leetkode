@@ -44,14 +44,20 @@ class _SubmissionCalendarWidgetState extends State<SubmissionCalendarWidget> {
       );
     }
 
-    return ListView.builder(
-      itemCount: groupedData.length,
-      itemBuilder: (context, index) {
-        final month = groupedData.keys.toList()[index];
-        final monthData = groupedData[month]!;
-        return _buildMonthCalendar(month, monthData, index);
-      },
-    );
+    return SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(children: [
+          ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: groupedData.length,
+            itemBuilder: (context, index) {
+              final month = groupedData.keys.toList()[index];
+              final monthData = groupedData[month]!;
+              return _buildMonthCalendar(month, monthData, index);
+            },
+          )
+        ]));
   }
 
   Widget _buildMonthCalendar(
