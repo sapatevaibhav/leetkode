@@ -1,10 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:leetkode/helper/data_fetch.dart';
+import 'package:leetkode/helper/maptoint.dart';
 import 'package:leetkode/helper/submission_calender.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,7 +45,7 @@ class CalenderPageState extends State<CalenderPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'View Calendar',
+          'Submission Calendar',
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -95,7 +95,7 @@ class CalenderPageState extends State<CalenderPage> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: SubmissionCalendarWidget(
-              submissionData: _convertToMapOfInt(
+              submissionData: convertToMapOfInt(
                 _userData!['submissionCalendar'],
               ),
             ),
@@ -105,20 +105,6 @@ class CalenderPageState extends State<CalenderPage> {
     );
   }
 
-  Map<String, int> _convertToMapOfInt(Map<String, dynamic>? data) {
-    if (data == null || data.isEmpty) {
-      log('Submission Calendar Data is null or empty');
-      return {};
-    }
-
-    Map<String, int> result = {};
-    data.forEach((key, value) {
-      result[key] = value as int;
-    });
-
-    log('Submission Calendar Data: ${json.encode(result)}');
-    return result;
-  }
 
   void _fetchUserData(String username) async {
     try {
@@ -126,7 +112,7 @@ class CalenderPageState extends State<CalenderPage> {
       setState(() {
         _userData = userData;
         if (_userData != null && _userData!['submissionCalendar'] != null) {
-          _convertToMapOfInt(_userData!['submissionCalendar']);
+          convertToMapOfInt(_userData!['submissionCalendar']);
           _isDataLoaded = true;
         } else {
           log('Submission Calendar Data is null or empty');
