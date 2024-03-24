@@ -70,9 +70,27 @@ class ProfilePageState extends State<ProfilePage> {
             if (_userData != null)
               Column(
                 children: [
-                  Text('Name: $username'),
-                  Text('Total Solved: ${_userData!['totalSolved']}'),
-                  Text('Rank: ${_userData!['ranking']}'),
+                  Text(
+                    'Name: $username',
+                    style: const TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    'Total Solved: ${_userData!['totalSolved']}',
+                    style: const TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                  Text(
+                    'Rank: ${_userData!['ranking']}',
+                    style: const TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   const SizedBox(height: 25),
                   ThreeLevels(userData: _userData),
                   const SizedBox(height: 25),
