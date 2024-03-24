@@ -56,9 +56,6 @@ class CalenderPageState extends State<CalenderPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              
-              const SizedBox(height: 20),
-              
               const SizedBox(height: 20),
               if (_isDataLoaded)
                 _buildUserDataDisplay()
@@ -88,12 +85,11 @@ class CalenderPageState extends State<CalenderPage> {
             fontWeight: FontWeight.normal,
           ),
         ),
-       
         const SizedBox(height: 25),
         SizedBox(
           height: 800,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(20.0),
             child: SubmissionCalendarWidget(
               submissionData: convertToMapOfInt(
                 _userData!['submissionCalendar'],
@@ -104,7 +100,6 @@ class CalenderPageState extends State<CalenderPage> {
       ],
     );
   }
-
 
   void _fetchUserData(String username) async {
     try {
