@@ -179,34 +179,43 @@ class SubmissionTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 500),
-        curve: Curves.easeInOut,
-        color: isFlipped ? Colors.green : _getColorForDate(submissionCount),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                '${dateTime.day}',
-                style: TextStyle(
-                  color: isFlipped
-                      ? Colors.black
-                      : _getTextColorForDate(submissionCount),
-                ),
-              ),
-              if (isFlipped) ...[
-                const SizedBox(height: 5),
+      child: Container(
+        decoration: BoxDecoration(
+          color: isFlipped ? Colors.green : _getColorForDate(submissionCount),
+          shape: BoxShape.circle,
+        ),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 5,
+          ),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
                 Text(
-                  '$submissionValue',
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                  '${dateTime.day}',
+                  style: TextStyle(
+                    color: isFlipped
+                        ? Colors.black
+                        : _getTextColorForDate(submissionCount),
                   ),
                 ),
+                if (isFlipped) ...[
+                  const SizedBox(height: 5),
+                  Text(
+                    '$submissionValue',
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
               ],
-            ],
+            ),
           ),
         ),
       ),
@@ -215,7 +224,8 @@ class SubmissionTile extends StatelessWidget {
 
   Color _getColorForDate(int submissionCount) {
     final colorValue = submissionCount / 30;
-    return Color.lerp(Colors.blue, Colors.red, colorValue)!;
+    return Color.lerp(const Color.fromARGB(255, 157, 203, 240),
+        const Color.fromARGB(255, 0, 140, 255), colorValue)!;
   }
 
   Color _getTextColorForDate(int submissionCount) {
