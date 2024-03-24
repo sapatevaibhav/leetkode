@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:leetkode/helper/username_prompt.dart';
 import 'package:leetkode/pages/demo_calender.dart';
+import 'package:leetkode/pages/friends_page.dart';
 import 'package:leetkode/pages/view_profile.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -53,7 +54,8 @@ class AppDrawer extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => const ProfilePage()),
               );
             },
-          ),ListTile(
+          ),
+          ListTile(
             title: const Text(
               'Calender',
             ),
@@ -61,6 +63,17 @@ class AppDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const CalenderPage()),
+              );
+            },
+          ),
+          ListTile(
+            title: const Text(
+              'Friends',
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const FriendsPage()),
               );
             },
           ),
