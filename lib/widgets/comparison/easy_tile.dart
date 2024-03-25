@@ -37,29 +37,29 @@ class EasyTile extends StatelessWidget {
             }
 
             final totalSolved = userData['easySolved'] as int;
-            final nearestBig50Multiple = ((totalSolved + 9) ~/ 10) * 10;
+            final nearestBig50Multiple = ((totalSolved + 49) ~/ 50) * 50;
             final progressValue = totalSolved / nearestBig50Multiple;
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 8, 
+                  height: 8,
                   child: LinearProgressIndicator(
                     value: progressValue.isNaN || progressValue.isInfinite
                         ? 0.0
                         : progressValue,
                     backgroundColor: const Color.fromARGB(131, 158, 158, 158),
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      totalSolved < 3
+                      totalSolved < 25
                           ? Colors.green
-                          : totalSolved < 5
+                          : totalSolved < 50
                               ? Colors.orange
-                              : totalSolved < 10
+                              : totalSolved < 100
                                   ? Colors.lightBlue
-                                  : totalSolved < 25
+                                  : totalSolved < 150
                                       ? Colors.indigoAccent
-                                      : totalSolved < 50
+                                      : totalSolved < 200
                                           ? Colors.yellow
                                           : Colors.redAccent,
                     ),
