@@ -81,7 +81,7 @@ class HardSolvedState extends State<HardSolved> {
     List<Map<String, dynamic>> userDataList = await Future.wait(futures);
 
     List<int> hardSolvedCounts = userDataList
-        .map<int>((userData) => userData['HardSolved'] ?? 0)
+        .map<int>((userData) => userData['hardSolved'] ?? 0)
         .toList();
 
     hardSolvedCounts.sort((a, b) => b.compareTo(a));

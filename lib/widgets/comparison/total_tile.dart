@@ -49,7 +49,7 @@ class TotalTile extends StatelessWidget {
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
             subtitle: SizedBox(
-              height: 20, 
+              // height: 8, 
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

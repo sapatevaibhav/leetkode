@@ -36,7 +36,7 @@ class HardTile extends StatelessWidget {
               return const Text("Invalid user data");
             }
 
-            final totalSolved = userData['HardSolved'] as int;
+            final totalSolved = userData['hardSolved'] as int;
             final nearestBig50Multiple = ((totalSolved + 49) ~/ 50) * 50;
             final progressValue = totalSolved / nearestBig50Multiple;
 
@@ -51,15 +51,15 @@ class HardTile extends StatelessWidget {
                         : progressValue,
                     backgroundColor: const Color.fromARGB(131, 158, 158, 158),
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      totalSolved < 25
+                      totalSolved < 3
                           ? Colors.green
-                          : totalSolved < 50
+                          : totalSolved < 5
                               ? Colors.orange
-                              : totalSolved < 100
+                              : totalSolved < 10
                                   ? Colors.lightBlue
-                                  : totalSolved < 150
+                                  : totalSolved < 25
                                       ? Colors.indigoAccent
-                                      : totalSolved < 200
+                                      : totalSolved < 50
                                           ? Colors.yellow
                                           : Colors.redAccent,
                     ),
