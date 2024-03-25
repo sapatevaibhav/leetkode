@@ -32,7 +32,7 @@ class _FriendsPageState extends State<FriendsPage> {
         child: FloatingActionButton.extended(
           onPressed: addFriend,
           label: const Icon(
-            CupertinoIcons.add,
+            CupertinoIcons.person_add,
           ),
         ),
       ),
