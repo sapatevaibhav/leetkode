@@ -1,16 +1,28 @@
 # leetkode
 
-A new Flutter project.
+Flutter Android application to track your leetcode progress as well to compare your profile with friends...
 
-## Getting Started
+### Getting Started
 
-This project is a starting point for a Flutter application.
+To get started with the **LeetKode** app, follow these simple steps:
 
-A few resources to get you started if this is your first Flutter project:
+### Clone the Git Repository
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+```bash
+git clone https://github.com/sapatevaibhav/leetkode
+```
+### Run the Flutter Project
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Ensure you have Flutter installed. If not, you can follow the instructions on [Flutter.dev](https://flutter.dev/) to get it installed on your machine.
+
+Navigate to the project directory using the terminal.
+
+Run the following command to fetch the dependencies:
+```bash 
+flutter pub get
+```
+Once the dependencies are fetched, run the app on your preferred device using:
+```bash
+flutter run
+```
+That's it! The app should now be running on your device/emulator.
