@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leetkode/widgets/comparison/easy_solved.dart';
+import 'package:leetkode/widgets/comparison/hard_solved.dart';
 import 'package:leetkode/widgets/comparison/medium_solved.dart';
 import 'package:leetkode/widgets/comparison/total_solved.dart';
 
@@ -34,6 +35,7 @@ class ComparePage extends StatelessWidget {
                   SizedBox(height: 20),
                   MediumSolved(),
                   SizedBox(height: 20),
+                  HardSolved(),
                 ],
               ),
             ),

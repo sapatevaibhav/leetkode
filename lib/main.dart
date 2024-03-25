@@ -1,6 +1,5 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:leetkode/pages/compare_all.dart';
 import 'package:leetkode/pages/home_page.dart';
 
 void main() {
