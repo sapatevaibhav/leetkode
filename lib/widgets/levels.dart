@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:leetkode/helper/easy.dart';
-import 'package:leetkode/helper/hard.dart';
-import 'package:leetkode/helper/medium.dart';
+import 'package:leetkode/widgets/easy.dart';
+import 'package:leetkode/widgets/hard.dart';
+import 'package:leetkode/widgets/medium.dart';
 
 class ThreeLevels extends StatelessWidget {
   final Map<String, dynamic>? userData;

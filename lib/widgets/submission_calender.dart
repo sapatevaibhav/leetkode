@@ -2,7 +2,7 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:leetkode/helper/submission_tile.dart';
+import 'package:leetkode/widgets/submission_tile.dart';
 
 class SubmissionCalendarWidget extends StatefulWidget {
   final Map<String, int>? submissionData;

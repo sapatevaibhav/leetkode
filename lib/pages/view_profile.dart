@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:leetkode/helper/accuracy.dart';
-import 'package:leetkode/helper/levels.dart';
+import 'package:leetkode/widgets/accuracy.dart';
+import 'package:leetkode/widgets/levels.dart';
 import 'package:leetkode/helper/data_fetch.dart';
 import 'package:leetkode/helper/maptoint.dart';
-import 'package:leetkode/helper/submission_calender.dart';
+import 'package:leetkode/widgets/submission_calender.dart';
 
 class ProfilePage extends StatefulWidget {
   final String? initialUsername;

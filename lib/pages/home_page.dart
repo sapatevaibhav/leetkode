@@ -1,9 +1,9 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:leetkode/helper/accuracy.dart';
-import 'package:leetkode/helper/app_drawer.dart';
+import 'package:leetkode/widgets/accuracy.dart';
+import 'package:leetkode/widgets/app_drawer.dart';
 import 'package:leetkode/helper/data_fetch.dart';
-import 'package:leetkode/helper/levels.dart';
+import 'package:leetkode/widgets/levels.dart';
 import 'package:leetkode/helper/username_prompt.dart';
 
 class HomePage extends StatefulWidget {
