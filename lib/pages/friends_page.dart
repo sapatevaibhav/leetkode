@@ -1,9 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:leetkode/helper/data_fetch.dart';
 import 'package:leetkode/pages/friends_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -39,7 +41,7 @@ class _FriendsPageState extends State<FriendsPage> {
     );
   }
 
-void addFriend() {
+  void addFriend() {
     showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) {
@@ -103,10 +105,11 @@ void addFriend() {
                     if (name.isNotEmpty && username.isNotEmpty) {
                       await _addFriendToSharedPreferences(name, username);
                       Navigator.of(context).pop();
-                      Navigator.of(context).pop(); 
+                      Navigator.of(context).pop();
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const FriendsPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const FriendsPage()),
                       );
                     } else {}
                   },
@@ -123,11 +126,23 @@ void addFriend() {
   Future<void> _addFriendToSharedPreferences(
       String name, String username) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    FetchUser fetchUser = FetchUser();
 
-    Map<String, String> friendsMap = Map<String, String>.from(
-        jsonDecode(prefs.getString('friendsMap') ?? '{}'));
+    try {
+      Map<String, dynamic> userData = await fetchUser.fetchUserData(username);
 
-    friendsMap[name] = username;
-    await prefs.setString('friendsMap', jsonEncode(friendsMap));
+      Map<String, String> friendsMap = Map<String, String>.from(
+        jsonDecode(prefs.getString('friendsMap') ?? '{}'),
+      );
+      friendsMap[name] = username;
+
+      await prefs.setString('friendsMap', jsonEncode(friendsMap));
+
+      await prefs.setString(username, jsonEncode(userData));
+
+      log('Friend added successfully!');
+    } catch (e) {
+      log('Failed to add friend: $e');
+    }
   }
 }
