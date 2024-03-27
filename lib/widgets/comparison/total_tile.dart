@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:leetkode/helper/data_fetch.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class TotalTile extends StatelessWidget {
   final String username;
   final int highestSolvedCount;
+  final int highestTotalSolved;
 
   const TotalTile({
     Key? key,
     required this.username,
     required this.highestSolvedCount,
+    required this.highestTotalSolved,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    int nearestBig100Multiple = ((highestSolvedCount + 99) ~/ 100) * 100;
     return FutureBuilder<Map<String, dynamic>>(
-      future: FetchUser().fetchUserData(username),
+      future: _loadUserDataFromSharedPreferences(username),
       builder:
           (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -25,8 +27,8 @@ class TotalTile extends StatelessWidget {
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
             subtitle: const SizedBox(
-              height: 8, 
-              child:  LinearProgressIndicator(
+              height: 8,
+              child: LinearProgressIndicator(
                 minHeight: 8,
                 borderRadius: BorderRadius.all(
                   Radius.circular(15),
@@ -42,14 +44,18 @@ class TotalTile extends StatelessWidget {
           );
         } else {
           Map<String, dynamic> userData = snapshot.data!;
-          int totalSolved = userData['totalSolved'];
+          int totalSolved = userData['totalSolved'] ?? 0;
+
+          double progressValue = highestTotalSolved != 0
+              ? totalSolved / highestTotalSolved
+              : 0; // Check if highestTotalSolved is not zero to avoid division by zero error
+
           return ListTile(
             title: Text(
               username,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
             subtitle: SizedBox(
-              // height: 8, 
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -58,7 +64,7 @@ class TotalTile extends StatelessWidget {
                     borderRadius: const BorderRadius.all(
                       Radius.circular(15),
                     ),
-                    value: totalSolved / nearestBig100Multiple,
+                    value: progressValue,
                     backgroundColor: const Color.fromARGB(131, 158, 158, 158),
                     valueColor: AlwaysStoppedAnimation<Color>(
                       totalSolved < 25
@@ -102,5 +108,18 @@ class TotalTile extends StatelessWidget {
         }
       },
     );
+  }
+
+  Future<Map<String, dynamic>> _loadUserDataFromSharedPreferences(
+      String username) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userDataString = prefs.getString(username);
+
+    if (userDataString != null) {
+      Map<String, dynamic> userData = jsonDecode(userDataString);
+      return userData;
+    } else {
+      throw Exception('User data not found for username: $username');
+    }
   }
 }
