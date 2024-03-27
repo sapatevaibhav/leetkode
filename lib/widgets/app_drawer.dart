@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:leetkode/helper/username_prompt.dart';
 import 'package:leetkode/pages/compare_all.dart';
 import 'package:leetkode/pages/demo_calender.dart';
@@ -24,9 +24,10 @@ class AppDrawer extends StatelessWidget {
         children: [
           DrawerHeader(
             child: Text(
-              'Hey,\n $username',
+              'Hey,\n$username',
               style: const TextStyle(
                 fontSize: 24,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
@@ -115,6 +116,16 @@ class AppDrawer extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => const ComparePage()),
               );
             },
+          ),
+          ListTile(
+            title: const Text(
+              'Made by sapatevaibhav',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+            onTap: () {},
           ),
         ],
       ),
