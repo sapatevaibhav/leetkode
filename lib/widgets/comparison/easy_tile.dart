@@ -120,5 +120,5 @@ class EasyTile extends StatelessWidget {
     } else {
       throw Exception('User data not found for username: $username');
     }
-  }
+  } 
 }

@@ -38,25 +38,32 @@ class SplashScreenState extends State<SplashScreen> {
 
   Future<void> fetchDataAndNavigate() async {
     String? savedUsername = await loadUsername();
+
+    
     if (savedUsername == null || savedUsername.isEmpty) {
+      navigateToHomeScreen();
       return;
     }
+
     Map<String, dynamic> userData =
         await fetchUser.fetchUserData(savedUsername);
-
     await saveDataToSharedPreferences(savedUsername, userData);
 
     List<String>? friendsList = await loadFriendsList();
+
+    
     if (friendsList == null || friendsList.isEmpty) {
+      navigateToHomeScreen();
       return;
     }
+
+    
     for (String friendUsername in friendsList) {
       if (kDebugMode) {
         debugPrint('Loading data for: $friendUsername');
       }
       Map<String, dynamic> friendUserData =
           await fetchUser.fetchUserData(friendUsername);
-
       await saveDataToSharedPreferences(friendUsername, friendUserData);
 
       setState(() {
@@ -64,22 +71,27 @@ class SplashScreenState extends State<SplashScreen> {
       });
     }
 
+    
+    navigateToHomeScreen();
+  }
+
+  void navigateToHomeScreen() {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const HomePage()),
     );
   }
 
-  Future<void> saveDataToSharedPreferences(
-      String username, Map<String, dynamic> data) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    Future<void> saveDataToSharedPreferences(
+        String username, Map<String, dynamic> data) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    if (kDebugMode && data.isNotEmpty) {
-      debugPrint('Storing data for username: $username success');
+      if (kDebugMode && data.isNotEmpty) {
+        debugPrint('Storing data for username: $username success');
+      }
+
+      await prefs.setString(username, jsonEncode(data));
     }
-
-    await prefs.setString(username, jsonEncode(data));
-  }
 
   @override
   Widget build(BuildContext context) {
