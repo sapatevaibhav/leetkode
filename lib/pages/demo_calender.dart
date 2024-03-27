@@ -1,9 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:leetkode/helper/data_fetch.dart';
 import 'package:leetkode/helper/maptoint.dart';
 import 'package:leetkode/widgets/submission_calender.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,7 +20,6 @@ class CalenderPageState extends State<CalenderPage> {
   String username = '';
   Map<String, dynamic>? _userData;
   bool _isDataLoaded = false;
-  final FetchUser _fetchUser = FetchUser();
 
   @override
   void initState() {
@@ -31,12 +30,30 @@ class CalenderPageState extends State<CalenderPage> {
   void _loadUsernameFromSharedPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? storedUsername = prefs.getString('username');
+    // log(storedUsername!);
     if (storedUsername != null) {
       setState(() {
         username = storedUsername;
         _usernameController.text = storedUsername;
       });
-      _fetchUserData(storedUsername);
+      _loadUserDataFromSharedPreferences(storedUsername);
+    }
+  }
+
+  void _loadUserDataFromSharedPreferences(String username) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userDataString = prefs.getString('userData');
+    if (userDataString != null) {
+      Map<String, dynamic> userData = jsonDecode(userDataString);
+      setState(() {
+        _userData = userData;
+        if (_userData != null && _userData!['submissionCalendar'] != null) {
+          convertToMapOfInt(_userData!['submissionCalendar']);
+          _isDataLoaded = true;
+        } else {
+          log('Submission Calendar Data is null or empty');
+        }
+      });
     }
   }
 
@@ -99,27 +116,5 @@ class CalenderPageState extends State<CalenderPage> {
         ),
       ],
     );
-  }
-
-  void _fetchUserData(String username) async {
-    try {
-      Map<String, dynamic> userData = await _fetchUser.fetchUserData(username);
-      setState(() {
-        _userData = userData;
-        if (_userData != null && _userData!['submissionCalendar'] != null) {
-          convertToMapOfInt(_userData!['submissionCalendar']);
-          _isDataLoaded = true;
-        } else {
-          log('Submission Calendar Data is null or empty');
-        }
-      });
-    } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error fetching user data: $error'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
   }
 }
