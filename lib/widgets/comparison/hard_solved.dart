@@ -1,5 +1,6 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:leetkode/helper/data_fetch.dart';
 import 'package:leetkode/widgets/comparison/hard_tile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -13,21 +14,60 @@ class HardSolved extends StatefulWidget {
 
 class HardSolvedState extends State<HardSolved> {
   late List<String> friendUsernames = [];
+  late List<int> highestSolvedCounts = [];
+  int highestHardSolved = 0;
 
   @override
   void initState() {
     super.initState();
-    retrieveFriendUsernames();
+    retrieveFriendData();
   }
 
-  void retrieveFriendUsernames() async {
+  Future<void> retrieveFriendData() async {
+    await retrieveFriendUsernames();
+    await retrieveHighestSolvedCounts();
+    calculateHighestHardSolved();
+  }
+
+  Future<void> retrieveFriendUsernames() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    Map<String, dynamic> friendsMap =
-        jsonDecode(prefs.getString('friendsMap') ?? '{}');
+    String? friendsMapString = prefs.getString('friendsMap');
+    if (friendsMapString != null) {
+      Map<String, dynamic> friendsMap = jsonDecode(friendsMapString);
+      setState(() {
+        friendUsernames = friendsMap.values.toList().cast<String>();
+      });
+    } else {
+      log('Friends map not found in SharedPreferences');
+    }
+  }
+
+  Future<void> retrieveHighestSolvedCounts() async {
+    List<int> counts = [];
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    for (String username in friendUsernames) {
+      String? userDataString = prefs.getString(username);
+      if (userDataString != null) {
+        Map<String, dynamic> userData = jsonDecode(userDataString);
+        int hardSolved = userData['hardSolved'] ?? 0;
+        counts.add(hardSolved);
+      } else {
+        log('User data not found for username: $username');
+      }
+    }
+
+    counts.sort((a, b) => b.compareTo(a));
 
     setState(() {
-      friendUsernames = friendsMap.values.toList().cast<String>();
+      highestSolvedCounts = counts;
     });
+  }
+
+  void calculateHighestHardSolved() {
+    if (highestSolvedCounts.isNotEmpty) {
+      highestHardSolved = ((highestSolvedCounts.first + 9) ~/ 10) * 10;
+    }
   }
 
   @override
@@ -41,51 +81,21 @@ class HardSolvedState extends State<HardSolved> {
           style: TextStyle(fontSize: 20),
         ),
         Flexible(
-          child: FutureBuilder<List<int>>(
-            future: fetchHighestSolvedCounts(friendUsernames),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(child: Text("Error: ${snapshot.error}"));
-              } else {
-                List<int> highestSolvedCounts = snapshot.data!;
-                return Column(
-                  children: friendUsernames.map((username) {
-                    final highestSolvedCount = highestSolvedCounts.isNotEmpty
-                        ? highestSolvedCounts.first
-                        : 0;
-                    return SizedBox(
-                      height: 100,
-                      child: HardTile(
-                        username: username,
-                        highestSolvedCount: highestSolvedCount,
-                      ),
-                    );
-                  }).toList(),
-                );
-              }
-            },
-          ),
+          child: highestSolvedCounts.isNotEmpty
+              ? ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: friendUsernames.length,
+                  itemBuilder: (context, index) => HardTile(
+                    username: friendUsernames[index],
+                    highestSolvedCount: highestSolvedCounts[index],
+                    highestHardSolved: highestHardSolved,
+                  ),
+                )
+              : const Center(
+                  child: Text("No data available"),
+                ),
         ),
       ],
     );
-  }
-
-  Future<List<int>> fetchHighestSolvedCounts(List<String> usernames) async {
-    List<Future<Map<String, dynamic>>> futures = [];
-    for (String username in usernames) {
-      futures.add(FetchUser().fetchUserData(username));
-    }
-
-    List<Map<String, dynamic>> userDataList = await Future.wait(futures);
-
-    List<int> hardSolvedCounts = userDataList
-        .map<int>((userData) => userData['hardSolved'] ?? 0)
-        .toList();
-
-    hardSolvedCounts.sort((a, b) => b.compareTo(a));
-
-    return hardSolvedCounts;
   }
 }
