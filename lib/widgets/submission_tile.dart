@@ -29,7 +29,7 @@ class SubmissionTile extends StatelessWidget {
           duration: const Duration(milliseconds: 500),
           curve: Curves.easeInOut,
           padding: const EdgeInsets.symmetric(
-            horizontal: 20,
+            horizontal: 10,
             vertical: 5,
           ),
           child: Center(
