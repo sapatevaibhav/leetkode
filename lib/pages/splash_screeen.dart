@@ -1,17 +1,15 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
-import 'dart:developer';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:leetkode/helper/data_fetch.dart';
 import 'package:leetkode/helper/username_prompt.dart';
 import 'package:leetkode/pages/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
   SplashScreenState createState() => SplashScreenState();
@@ -19,6 +17,7 @@ class SplashScreen extends StatefulWidget {
 
 class SplashScreenState extends State<SplashScreen> {
   FetchUser fetchUser = FetchUser();
+  List<String> friendUsernames = [];
 
   @override
   void initState() {
@@ -52,10 +51,17 @@ class SplashScreenState extends State<SplashScreen> {
       return;
     }
     for (String friendUsername in friendsList) {
+      if (kDebugMode) {
+        debugPrint('Loading data for: $friendUsername');
+      }
       Map<String, dynamic> friendUserData =
           await fetchUser.fetchUserData(friendUsername);
 
       await saveDataToSharedPreferences(friendUsername, friendUserData);
+
+      setState(() {
+        friendUsernames.add(friendUsername);
+      });
     }
 
     Navigator.pushReplacement(
@@ -69,7 +75,7 @@ class SplashScreenState extends State<SplashScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     if (kDebugMode && data.isNotEmpty) {
-      log('Storing data for username: $username success');
+      debugPrint('Storing data for username: $username success');
     }
 
     await prefs.setString(username, jsonEncode(data));
@@ -77,9 +83,38 @@ class SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: CircularProgressIndicator(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const CircularProgressIndicator(),
+            const SizedBox(height: 20),
+            FutureBuilder<String?>(
+              future: loadUsername(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  final savedUsername = snapshot.data ?? 'Your Username';
+                  return Text(
+                    'Loading data for: $savedUsername',
+                    style: const TextStyle(fontSize: 16),
+                  );
+                } else {
+                  return const SizedBox();
+                }
+              },
+            ),
+            if (friendUsernames.isNotEmpty)
+              Column(
+                children: friendUsernames.map((username) {
+                  return Text(
+                    'Loading data for: $username',
+                    style: const TextStyle(fontSize: 16),
+                  );
+                }).toList(),
+              ),
+          ],
+        ),
       ),
     );
   }
