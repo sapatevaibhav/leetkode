@@ -1,4 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:leetkode/helper/data_fetch.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<String?> promptUsername(BuildContext context) async {
@@ -23,7 +28,7 @@ Future<String?> promptUsername(BuildContext context) async {
           ElevatedButton(
             onPressed: () {
               String enteredUsername = usernameController.text;
-              
+
               if (enteredUsername.isNotEmpty) {
                 Navigator.of(context).pop(
                   enteredUsername,
@@ -40,17 +45,51 @@ Future<String?> promptUsername(BuildContext context) async {
   );
 }
 
+Future<void> saveUsername(String username) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString(
+    'username',
+    username,
+  );
+}
+
+Future<void> saveUserData(Map<String, dynamic> userData) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString(
+    'userData',
+    jsonEncode(userData),
+  );
+}
+
+Future<void> updateUsernameAndFetchData(BuildContext context) async {
+  String? newUsername = await promptUsername(context);
+  if (newUsername != null) {
+    try {
+      FetchUser fetchUser = FetchUser();
+      Map<String, dynamic> userData =
+          await fetchUser.fetchUserData(newUsername);
+      await saveUsername(newUsername);
+      await saveUserData(userData);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Username updated successfully'),
+        ),
+      );
+    } catch (e) {
+      log('Error updating username: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Failed to update username'),
+        ),
+      );
+    }
+  }
+}
+
 Future<String?> loadUsername() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   return prefs.getString(
     'username',
-  );
-}
-
-Future<void> saveUsername(String username) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setString(
-    'username',
-    username,
   );
 }
