@@ -142,9 +142,9 @@ class _FriendsPageState extends State<FriendsPage> {
 
       await prefs.setString(username, jsonEncode(userData));
 
-      log('Friend added successfully!');
+      log('$username added successfully!');
     } catch (e) {
-      log('Failed to add friend: $e');
+      log('Failed to add $username: $e');
     }
   }
 }

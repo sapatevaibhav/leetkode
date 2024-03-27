@@ -39,7 +39,7 @@ class CalenderPageState extends State<CalenderPage> {
 
   void _loadUserDataFromSharedPreferences(String username) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? userDataString = prefs.getString('userData');
+    String? userDataString = prefs.getString(username);
     if (userDataString != null) {
       Map<String, dynamic> userData = jsonDecode(userDataString);
       setState(() {
@@ -56,6 +56,7 @@ class CalenderPageState extends State<CalenderPage> {
 
   @override
   Widget build(BuildContext context) {
+    // log('_buildUserDataDisplay called');
     return Scaffold(
       appBar: AppBar(
         title: const Text(
