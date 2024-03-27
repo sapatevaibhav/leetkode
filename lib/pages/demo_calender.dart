@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:convert';
 import 'dart:developer';
 
@@ -30,7 +28,6 @@ class CalenderPageState extends State<CalenderPage> {
   void _loadUsernameFromSharedPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? storedUsername = prefs.getString('username');
-    // log(storedUsername!);
     if (storedUsername != null) {
       setState(() {
         username = storedUsername;

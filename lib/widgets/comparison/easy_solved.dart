@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:leetkode/widgets/comparison/easy_tile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import 'dart:developer';
 
 class EasySolved extends StatefulWidget {
   const EasySolved({Key? key}) : super(key: key);
@@ -36,7 +37,7 @@ class EasySolvedState extends State<EasySolved> {
         friendUsernames = friendsMap.values.toList().cast<String>();
       });
     } else {
-      print('Friends map not found in SharedPreferences');
+      log('Friends map not found in SharedPreferences');
     }
   }
 
@@ -51,7 +52,7 @@ class EasySolvedState extends State<EasySolved> {
         int easySolved = userData['easySolved'] ?? 0;
         counts.add(easySolved);
       } else {
-        print('User data not found for username: $username');
+        log('User data not found for username: $username');
       }
     }
 
@@ -89,7 +90,7 @@ class EasySolvedState extends State<EasySolved> {
               } else {
                 List<int> easySolvedCounts = snapshot.data!;
                 return ListView.builder(
-                  shrinkWrap: true, // Add this line
+                  shrinkWrap: true,
                   itemCount: friendUsernames.length,
                   itemBuilder: (context, index) => EasyTile(
                     username: friendUsernames[index],

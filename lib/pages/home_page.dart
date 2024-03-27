@@ -105,8 +105,6 @@ class HomePageState extends State<HomePage> {
           children: <Widget>[
             const SizedBox(height: 20),
             if (_userData != null)
-              // Expanded(
-              //   child:
               Column(
                 children: [
                   Text(
@@ -136,7 +134,6 @@ class HomePageState extends State<HomePage> {
                   UserAccuracy(userData: _userData),
                 ],
               ),
-            // ),
           ],
         ),
       ),

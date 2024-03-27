@@ -46,9 +46,8 @@ class TotalTile extends StatelessWidget {
           Map<String, dynamic> userData = snapshot.data!;
           int totalSolved = userData['totalSolved'] ?? 0;
 
-          double progressValue = highestTotalSolved != 0
-              ? totalSolved / highestTotalSolved
-              : 0; // Check if highestTotalSolved is not zero to avoid division by zero error
+          double progressValue =
+              highestTotalSolved != 0 ? totalSolved / highestTotalSolved : 0;
 
           return ListTile(
             title: Text(

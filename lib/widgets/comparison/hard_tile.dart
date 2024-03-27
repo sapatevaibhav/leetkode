@@ -46,9 +46,8 @@ class HardTile extends StatelessWidget {
           Map<String, dynamic> userData = snapshot.data!;
           int hardSolved = userData['hardSolved'] ?? 0;
 
-          double progressValue = highestHardSolved != 0
-              ? hardSolved / highestHardSolved
-              : 0; // Check if highestHardSolved is not zero to avoid division by zero error
+          double progressValue =
+              highestHardSolved != 0 ? hardSolved / highestHardSolved : 0;
 
           return ListTile(
             title: Text(
@@ -86,7 +85,7 @@ class HardTile extends StatelessWidget {
                       '$hardSolved',
                       style: TextStyle(
                         fontSize: 18,
-                        color:  hardSolved < 3
+                        color: hardSolved < 3
                             ? Colors.green
                             : hardSolved < 5
                                 ? Colors.orange

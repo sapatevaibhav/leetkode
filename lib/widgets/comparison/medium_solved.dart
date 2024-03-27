@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:leetkode/widgets/comparison/medium_tile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,7 +38,7 @@ class MediumSolvedState extends State<MediumSolved> {
         friendUsernames = friendsMap.values.toList().cast<String>();
       });
     } else {
-      print('Friends map not found in SharedPreferences');
+      log('Friends map not found in SharedPreferences');
     }
   }
 
@@ -51,7 +53,7 @@ class MediumSolvedState extends State<MediumSolved> {
         int mediumSolved = userData['mediumSolved'] ?? 0;
         counts.add(mediumSolved);
       } else {
-        print('User data not found for username: $username');
+        log('User data not found for username: $username');
       }
     }
 
@@ -89,7 +91,7 @@ class MediumSolvedState extends State<MediumSolved> {
               } else {
                 List<int> mediumSolvedCounts = snapshot.data!;
                 return ListView.builder(
-                  shrinkWrap: true, // Add this line
+                  shrinkWrap: true,
                   itemCount: friendUsernames.length,
                   itemBuilder: (context, index) => MediumTile(
                     username: friendUsernames[index],

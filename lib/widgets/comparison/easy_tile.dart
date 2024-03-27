@@ -46,9 +46,8 @@ class EasyTile extends StatelessWidget {
           Map<String, dynamic> userData = snapshot.data!;
           int easySolved = userData['easySolved'] ?? 0;
 
-          double progressValue = highestEasySolved != 0
-              ? easySolved / highestEasySolved
-              : 0; // Check if highestEasySolved is not zero to avoid division by zero error
+          double progressValue =
+              highestEasySolved != 0 ? easySolved / highestEasySolved : 0;
 
           return ListTile(
             title: Text(

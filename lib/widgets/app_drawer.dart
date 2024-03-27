@@ -23,19 +23,13 @@ class AppDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-            // decoration:  BoxDecoration(
-            //   // color: Colors.lightBlue[100],
-            // ),
-            // child: Center(
             child: Text(
               'Hey,\n $username',
               style: const TextStyle(
-                // color: Colors.white,
                 fontSize: 24,
               ),
             ),
           ),
-          // ),
           ListTile(
             leading: const Icon(
               CupertinoIcons.pen,

@@ -46,9 +46,8 @@ class MediumTile extends StatelessWidget {
           Map<String, dynamic> userData = snapshot.data!;
           int mediumSolved = userData['mediumSolved'] ?? 0;
 
-          double progressValue = highestMediumSolved != 0
-              ? mediumSolved / highestMediumSolved
-              : 0; // Check if highestMediumSolved is not zero to avoid division by zero error
+          double progressValue =
+              highestMediumSolved != 0 ? mediumSolved / highestMediumSolved : 0;
 
           return ListTile(
             title: Text(

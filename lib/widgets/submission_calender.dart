@@ -1,5 +1,3 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:leetkode/widgets/submission_tile.dart';
@@ -11,11 +9,11 @@ class SubmissionCalendarWidget extends StatefulWidget {
       : super(key: key);
 
   @override
-  _SubmissionCalendarWidgetState createState() =>
-      _SubmissionCalendarWidgetState();
+  SubmissionCalendarWidgetState createState() =>
+      SubmissionCalendarWidgetState();
 }
 
-class _SubmissionCalendarWidgetState extends State<SubmissionCalendarWidget> {
+class SubmissionCalendarWidgetState extends State<SubmissionCalendarWidget> {
   Map<int, List<MapEntry<String, int>>> groupedData = {};
   Map<int, Map<int, bool>> tileFlippedStates = {};
   Map<int, Map<int, int>> tileSubmissionValues = {};
