@@ -100,41 +100,43 @@ class HomePageState extends State<HomePage> {
         ],
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const SizedBox(height: 20),
-            if (_userData != null)
-              Column(
-                children: [
-                  Text(
-                    'Name: $_username',
-                    style: const TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const SizedBox(height: 20),
+              if (_userData != null)
+                Column(
+                  children: [
+                    Text(
+                      'Name: $_username',
+                      style: const TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  Text(
-                    'Total Solved: ${_userData!['totalSolved']}',
-                    style: const TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.normal,
+                    Text(
+                      'Total Solved: ${_userData!['totalSolved']}',
+                      style: const TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.normal,
+                      ),
                     ),
-                  ),
-                  Text(
-                    'Rank: ${_userData!['ranking']}',
-                    style: const TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
+                    Text(
+                      'Rank: ${_userData!['ranking']}',
+                      style: const TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 25),
-                  ThreeLevels(userData: _userData),
-                  const SizedBox(height: 25),
-                  UserAccuracy(userData: _userData),
-                ],
-              ),
-          ],
+                    const SizedBox(height: 25),
+                    ThreeLevels(userData: _userData),
+                    const SizedBox(height: 25),
+                    UserAccuracy(userData: _userData),
+                  ],
+                ),
+            ],
+          ),
         ),
       ),
       drawer: AppDrawer(username: _username, onUpdateUsername: updateUsername),
