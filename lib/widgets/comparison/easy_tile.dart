@@ -1,96 +1,125 @@
 import 'package:flutter/material.dart';
-import 'package:leetkode/helper/data_fetch.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class EasyTile extends StatelessWidget {
   final String username;
   final int highestSolvedCount;
+  final int highestEasySolved;
 
   const EasyTile({
     Key? key,
     required this.username,
     required this.highestSolvedCount,
+    required this.highestEasySolved,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        username,
-        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-      ),
-      subtitle: FutureBuilder<Map<String, dynamic>>(
-        future: FetchUser().fetchUserData(username),
-        builder: (BuildContext context,
-            AsyncSnapshot<Map<String, dynamic>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const LinearProgressIndicator(
-              minHeight: 8,
-              backgroundColor: Color.fromARGB(131, 158, 158, 158),
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-            );
-          } else if (snapshot.hasError) {
-            return Text("Error: ${snapshot.error}");
-          } else {
-            final userData = snapshot.data;
-            if (userData == null || !userData.containsKey('easySolved')) {
-              return const Text("Invalid user data");
-            }
+    return FutureBuilder<Map<String, dynamic>>(
+      future: _loadUserDataFromSharedPreferences(username),
+      builder:
+          (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return ListTile(
+            title: Text(
+              username,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+            subtitle: const SizedBox(
+              height: 8,
+              child: LinearProgressIndicator(
+                minHeight: 8,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(15),
+                ),
+                backgroundColor: Color.fromARGB(131, 158, 158, 158),
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+              ),
+            ),
+          );
+        } else if (snapshot.hasError) {
+          return ListTile(
+            title: Text("Error loading data for $username"),
+          );
+        } else {
+          Map<String, dynamic> userData = snapshot.data!;
+          int easySolved = userData['easySolved'] ?? 0;
 
-            final totalSolved = userData['easySolved'] as int;
-            final nearestBig50Multiple = ((totalSolved + 49) ~/ 50) * 50;
-            final progressValue = totalSolved / nearestBig50Multiple;
+          double progressValue = highestEasySolved != 0
+              ? easySolved / highestEasySolved
+              : 0; // Check if highestEasySolved is not zero to avoid division by zero error
 
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 8,
-                  child: LinearProgressIndicator(
-                    value: progressValue.isNaN || progressValue.isInfinite
-                        ? 0.0
-                        : progressValue,
+          return ListTile(
+            title: Text(
+              username,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+            subtitle: SizedBox(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  LinearProgressIndicator(
+                    minHeight: 8,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(15),
+                    ),
+                    value: progressValue,
                     backgroundColor: const Color.fromARGB(131, 158, 158, 158),
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      totalSolved < 25
+                      easySolved < 25
                           ? Colors.green
-                          : totalSolved < 50
+                          : easySolved < 50
                               ? Colors.orange
-                              : totalSolved < 100
+                              : easySolved < 100
                                   ? Colors.lightBlue
-                                  : totalSolved < 150
+                                  : easySolved < 150
                                       ? Colors.indigoAccent
-                                      : totalSolved < 200
+                                      : easySolved < 200
                                           ? Colors.yellow
                                           : Colors.redAccent,
                     ),
                   ),
-                ),
-                const SizedBox(height: 8),
-                Center(
-                  child: Text(
-                    '$totalSolved',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: totalSolved < 25
-                          ? Colors.green
-                          : totalSolved < 50
-                              ? Colors.orange
-                              : totalSolved < 100
-                                  ? Colors.lightBlue
-                                  : totalSolved < 150
-                                      ? Colors.indigoAccent
-                                      : totalSolved < 200
-                                          ? Colors.yellow
-                                          : Colors.redAccent,
-                      fontWeight: FontWeight.bold,
+                  const SizedBox(height: 8),
+                  Center(
+                    child: Text(
+                      '$easySolved',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: easySolved < 25
+                            ? Colors.green
+                            : easySolved < 50
+                                ? Colors.orange
+                                : easySolved < 100
+                                    ? Colors.lightBlue
+                                    : easySolved < 150
+                                        ? Colors.indigoAccent
+                                        : easySolved < 200
+                                            ? Colors.yellow
+                                            : Colors.redAccent,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            );
-          }
-        },
-      ),
+                ],
+              ),
+            ),
+          );
+        }
+      },
     );
+  }
+
+  Future<Map<String, dynamic>> _loadUserDataFromSharedPreferences(
+      String username) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userDataString = prefs.getString(username);
+
+    if (userDataString != null) {
+      Map<String, dynamic> userData = jsonDecode(userDataString);
+      return userData;
+    } else {
+      throw Exception('User data not found for username: $username');
+    }
   }
 }
