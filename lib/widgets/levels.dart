@@ -15,28 +15,31 @@ class ThreeLevels extends StatelessWidget {
   Widget build(
     BuildContext context,
   ) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        EasyWidget(
-          easySolved: userData!['easySolved'],
-          totalEasy: userData!['totalEasy'],
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        MediumWidget(
-          mediumSolved: userData!['mediumSolved'],
-          totalMedium: userData!['totalMedium'],
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        HardWidget(
-          hardSolved: userData!['hardSolved'],
-          totalHard: userData!['totalHard'],
-        )
-      ],
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          EasyWidget(
+            easySolved: userData!['easySolved'],
+            totalEasy: userData!['totalEasy'],
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          MediumWidget(
+            mediumSolved: userData!['mediumSolved'],
+            totalMedium: userData!['totalMedium'],
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          HardWidget(
+            hardSolved: userData!['hardSolved'],
+            totalHard: userData!['totalHard'],
+          )
+        ],
+      ),
     );
   }
 }
