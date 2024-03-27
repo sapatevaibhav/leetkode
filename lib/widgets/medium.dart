@@ -26,7 +26,7 @@ class MediumWidget extends StatelessWidget {
           fontSize: 20,
         ),
       ),
-      footer: const Text("Easy"),
+      footer: const Text("Medium"),
       center: Text(
         '${(mediumSolved / totalMedium * 100).toStringAsFixed(
           2,
